@@ -48,11 +48,57 @@ export default function App() {
     return buildSchema(formState);
   }, [formState]);
 
+  const fillTestData = useCallback(() => {
+    setFormState({
+      subtype: 'Restaurant',
+      name: 'Sunrise Bakery & Cafe',
+      description: 'Sunrise Bakery & Cafe is a family-owned artisan bakery and breakfast cafe in the heart of Portland. We specialize in handcrafted sourdough breads, French pastries, and farm-to-table brunch dishes. Open daily with fresh-baked goods starting at 6am.',
+      url: 'https://www.sunrisebakerycafe.com',
+      telephone: '(503) 555-0142',
+      email: 'hello@sunrisebakerycafe.com',
+      streetAddress: '123 Main St',
+      addressLocality: 'Portland',
+      addressRegion: 'OR',
+      postalCode: '97201',
+      addressCountry: 'US',
+      latitude: '45.5152',
+      longitude: '-122.6784',
+      openingHours: {
+        Monday: { open: '06:00', close: '15:00', closed: false },
+        Tuesday: { open: '06:00', close: '15:00', closed: false },
+        Wednesday: { open: '06:00', close: '15:00', closed: false },
+        Thursday: { open: '06:00', close: '15:00', closed: false },
+        Friday: { open: '06:00', close: '16:00', closed: false },
+        Saturday: { open: '07:00', close: '16:00', closed: false },
+        Sunday: { open: '07:00', close: '14:00', closed: false },
+      },
+      priceRange: '$$',
+      paymentAccepted: ['Cash', 'Credit Card', 'Debit Card', 'Apple Pay', 'Google Pay'],
+      socialProfiles: {
+        facebook: 'https://facebook.com/sunrisebakerycafe',
+        instagram: 'https://instagram.com/sunrisebakerycafe',
+        twitter: '',
+        linkedin: '',
+        youtube: '',
+      },
+      logo: 'https://www.sunrisebakerycafe.com/logo.png',
+      image: 'https://www.sunrisebakerycafe.com/storefront.jpg',
+      foundingDate: '2018',
+      isServiceArea: false,
+      serviceAreas: [''],
+      typeFields: {
+        servesCuisine: 'Bakery, Cafe, Brunch',
+        menu: 'https://www.sunrisebakerycafe.com/menu',
+        acceptsReservations: true,
+      },
+    });
+  }, []);
+
   const currentSubtype = BUSINESS_SUBTYPES.find(s => s.id === formState.subtype);
 
   return (
     <div className="min-h-screen bg-abyss bg-glow bg-grid">
-      <div className="relative z-10 max-w-6xl mx-auto px-4 py-8 sm:py-12 animate-fadeIn">
+      <div className="relative z-10 max-w-[1600px] mx-auto px-4 py-8 sm:py-12 animate-fadeIn">
         {/* Breadcrumb */}
         <nav className="mb-8 text-sm text-galactic">
           <a href="https://seo-tools-tau.vercel.app/" className="text-azure hover:text-white transition-colors">Free Tools</a>
@@ -80,34 +126,52 @@ export default function App() {
           </p>
         </header>
 
+        <div className="flex justify-end mb-4">
+          <button
+            type="button"
+            onClick={fillTestData}
+            className="px-3 py-1.5 text-xs font-mono bg-prince/20 text-prince border border-prince/30 rounded hover:bg-prince/30 transition-colors focus:outline-none focus:ring-2 focus:ring-prince focus:ring-offset-2 focus:ring-offset-abyss"
+          >
+            Fill Test Data
+          </button>
+        </div>
+
         {/* Main layout: two columns on desktop */}
         <div className="flex flex-col lg:flex-row gap-6">
           {/* Left: Form */}
           <div className="w-full lg:w-1/2 space-y-6">
-            <SubtypeSelector
-              value={formState.subtype}
-              onChange={handleSubtypeChange}
-            />
+            <div className="animate-slideUp" style={{ animationDelay: '0s' }}>
+              <SubtypeSelector
+                value={formState.subtype}
+                onChange={handleSubtypeChange}
+              />
+            </div>
 
             {currentSubtype && currentSubtype.fields.length > 0 && (
-              <TypeSpecificFields
-                subtypeId={formState.subtype}
-                typeFields={formState.typeFields}
-                onChange={handleTypeFieldsChange}
-              />
+              <div className="animate-slideUp" style={{ animationDelay: '0.08s' }}>
+                <TypeSpecificFields
+                  subtypeId={formState.subtype}
+                  typeFields={formState.typeFields}
+                  onChange={handleTypeFieldsChange}
+                />
+              </div>
             )}
 
-            <CommonFields
-              formState={formState}
-              updateField={updateField}
-            />
+            <div className="animate-slideUp" style={{ animationDelay: '0.16s' }}>
+              <CommonFields
+                formState={formState}
+                updateField={updateField}
+              />
+            </div>
 
-            <ServiceAreaFields
-              isServiceArea={formState.isServiceArea}
-              serviceAreas={formState.serviceAreas}
-              onToggle={() => updateField('isServiceArea', !formState.isServiceArea)}
-              onAreasChange={(areas) => updateField('serviceAreas', areas)}
-            />
+            <div className="animate-slideUp" style={{ animationDelay: '0.24s' }}>
+              <ServiceAreaFields
+                isServiceArea={formState.isServiceArea}
+                serviceAreas={formState.serviceAreas}
+                onToggle={() => updateField('isServiceArea', !formState.isServiceArea)}
+                onAreasChange={(areas) => updateField('serviceAreas', areas)}
+              />
+            </div>
           </div>
 
           {/* Right: Preview & Actions — sticky on desktop */}
